@@ -9,3 +9,9 @@ canvas{
     display: block;
     margin: 0 auto;
 }
+
+@media (max-width: 450px) {
+    canvas{
+        height: 550;
+    }
+}
