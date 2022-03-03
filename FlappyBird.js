@@ -89,14 +89,70 @@ const flappybird = {
     }
 }
 
+const mensagemIniciar = {
+    spriteX: 134,
+    spriteY: 0,
+    largura: 174,
+    altura: 152,
+    canvasX: (canvas.width / 2) - 174 /2,
+    canvasY: 50,
+    desenha(){
+        contexto.drawImage(
+            sprites,
+            mensagemIniciar.spriteX, mensagemIniciar.spriteY,
+            mensagemIniciar.largura, mensagemIniciar.altura,
+            mensagemIniciar.canvasX, mensagemIniciar.canvasY,
+            mensagemIniciar.largura, mensagemIniciar.altura
+        );
+    }
+}
+
+let telaAtiva = {};
+function mudarParaTela(novaTela){
+    telaAtiva = novaTela;
+}
+
+const telas = {
+    iniciar: {
+        desenha(){
+            background.desenha();
+            chao.desenha();
+            flappybird.desenha();
+            mensagemIniciar.desenha();
+        },
+        click(){
+            mudarParaTela(telas.Jogo);
+        },
+        atualiza(){
+
+        }
+    }
+}
+
+telas.Jogo = {
+    desenha(){
+        background.desenha();
+        chao.desenha();
+        flappybird.desenha();
+    },
+    atualiza(){
+        flappybird.atualiza();
+    }
+}
+
 function loop(){
-   flappybird.atualiza();
-   
-   background.desenha();
-   chao.desenha();
-   flappybird.desenha();
+    telaAtiva.desenha();
+    telaAtiva.atualiza();
+ 
 
     requestAnimationFrame(loop);
 }
 
+window.addEventListener("click", function(){
+    if(telaAtiva.click){
+        telaAtiva.click();
+    }
+});
+
+mudarParaTela(telas.iniciar)
 loop();
