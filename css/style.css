@@ -12,6 +12,7 @@ canvas{
 
 @media (max-width: 450px) {
     canvas{
+        margin-top: -20px;
         height: 550;
     }
 }
