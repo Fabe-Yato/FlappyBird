@@ -1,11 +1,13 @@
 body{
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-canvas{
+#game-canvas{
+    
     border: 1px solid #000;
     display: block;
     margin: 0 auto;
 }
+
