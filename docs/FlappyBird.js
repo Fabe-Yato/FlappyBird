@@ -192,7 +192,7 @@ function criaCanos(){
         },
         desenha(){
             canos.pares.forEach((par)=>{  
-                const espacamentoEntreCanos = 90;
+                const espacamentoEntreCanos = 95;
                 const randomY = par.y;
                 const canoCeuX = par.x;
                 const canoCeuY = randomY;
@@ -255,7 +255,7 @@ function criaCanos(){
                 canos.pares.push({x: 310, y: -150 * (Math.random() + 1)})
             }
             canos.pares.forEach((par)=>{
-                par.x = par.x -2.5;
+                 par.x = par.x -1.8;
 
                 if(canos.colisaoComFlappyBird(par)){
                     console.log("Perdeu")
