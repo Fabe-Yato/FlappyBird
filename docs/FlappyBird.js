@@ -296,7 +296,7 @@ function criaPlacar(){
             contexto.fillText(`${placar.pontuacao}`, 300, 30)
         },
         atualiza(){
-            let intervaloFrames = 95;
+            let intervaloFrames = 100;
             const passouIntervalo = frames % intervaloFrames === 0;
             
             setTimeout(()=>{
