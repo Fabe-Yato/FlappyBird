@@ -19,7 +19,8 @@ sprites.src = './sprites.png';
 const canvas = document.querySelector("canvas");
 const contexto = canvas.getContext("2d");
 
-
+let pontuacaoMaxima = [0];
+let ultimaPontuacao;
 
 //background
 const background = {
@@ -124,6 +125,10 @@ function criaFlappyBird(){
             if(fazColisao(flappybird, globais.chao)){
 
                 somHit.play()
+                ultimaPontuacao = globais.placar.pontuacao;
+                pontuacaoMaxima.push(globais.placar.pontuacao)
+                pontuacaoMaxima.sort((a,b)=> a-b).reverse()
+                pontuacaoMaxima.pop()
 
                 setTimeout(()=>{
                     mudarParaTela(telas.gameOver)
@@ -235,11 +240,20 @@ function criaCanos(){
                 if(cabecaFlappy <= par.canoCeu.y){
                     somHit.play()
                     setTimeout(()=> somCaiu.play(), 500);
-                    
+
+                    ultimaPontuacao = globais.placar.pontuacao;
+                    pontuacaoMaxima.push(globais.placar.pontuacao)
+                    pontuacaoMaxima.sort((a,b)=> a-b).reverse()
+                    pontuacaoMaxima.pop()
+           
                     return true
                 }
                 if(peFlappy >= par.canoChao.y){
                     somHit.play()
+                    ultimaPontuacao = globais.placar.pontuacao;
+                    pontuacaoMaxima.push(globais.placar.pontuacao)
+                    pontuacaoMaxima.sort((a,b)=> a-b).reverse() 
+                    pontuacaoMaxima.pop()
                     return true
                 }
             }
@@ -272,6 +286,31 @@ function criaCanos(){
     return canos;
 }
 
+function criaPlacar(){
+    const placar = {
+        pontuacao: 0,
+        desenha(){
+            contexto.font = '15px "Press Start 2P"'
+            contexto.fillStyle = 'black'
+            contexto.textAlign = 'right'
+            contexto.fillText(`${placar.pontuacao}`, 300, 30)
+        },
+        atualiza(){
+            let intervaloFrames = 95;
+            const passouIntervalo = frames % intervaloFrames === 0;
+            
+            setTimeout(()=>{
+                if(passouIntervalo){
+                    placar.pontuacao = placar.pontuacao + 1
+            
+                }
+            }, 3000);
+            
+        }
+    }
+    return placar;
+}
+
 function gameOverTela() {
     const gameOver = {
         spriteX: 134,
@@ -288,6 +327,15 @@ function gameOverTela() {
                 gameOver.canvasX, gameOver.canvasY,
                 gameOver.largura, gameOver.altura
             );
+            contexto.font = '15px "Press Start 2P"'
+            contexto.fillStyle = 'black'
+            contexto.textAlign = 'right'
+            contexto.fillText(`${ultimaPontuacao}`, 250, 145)
+
+            contexto.font = '15px "Press Start 2P"'
+            contexto.fillStyle = 'black'
+            contexto.textAlign = 'right'
+            contexto.fillText(`${pontuacaoMaxima[0]}`, 250, 185)
         },
         atualiza(){
 
@@ -305,7 +353,7 @@ function gameOverTela() {
             }
         },
         click(){
-          
+           
             setTimeout(()=>{
                 mudarParaTela(telas.iniciar)
             }, 400);
@@ -369,12 +417,15 @@ const telas = {
 }
 
 telas.Jogo = {
+    inicializa(){
+        globais.placar = criaPlacar();
+    },
     desenha(){
         background.desenha();
         globais.canos.desenha();
         globais.chao.desenha();
         globais.flappybird.desenha();
-        
+        globais.placar.desenha();
     },
     click(){
         globais.flappybird.pula();
@@ -383,7 +434,7 @@ telas.Jogo = {
         globais.flappybird.atualiza();
         globais.chao.atualiza();
         globais.canos.atualiza();
-
+        globais.placar.atualiza();
     }
 }
 
